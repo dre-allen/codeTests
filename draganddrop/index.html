@@ -1,0 +1,201 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Drag and Drop Plain JS Test</title>
+<style>
+body {
+	font-family:Arial, Helvetica, sans-serif;
+  	}
+	
+#choices {
+	float:left;
+	text-align:center;
+	}
+	
+#choice1, #choice2, #choice3, #choice4, #choice5, #choice6, #choice7, #choice8, #choice9, #choice10 {
+	display:block;
+	width:197px;
+	height:50px;
+	margin:3px;
+	}
+	
+#answers {
+	float:left;
+	text-align:center;
+	}
+
+
+#answer1, #answer2, #answer3, #answer4, #answer5, #answer6, #answer7, #answer8, #answer9, #answer10 {
+	display:block;
+	width:200px;
+	height:56px;
+	margin:3px;
+	border:1px solid #555;
+	}
+
+#answers p {
+	float:left;
+	color:#555;
+	}
+
+.choice {
+	background:#EEE;
+	}
+
+.controls {
+	clear:both; 
+	}
+		
+#successMessage {
+	color:green;
+	display:none;
+	}
+		
+#errorMessage {
+	color:red;
+	display:none;
+	}
+		
+.wrongAnswer {
+			
+	}
+</style>
+</head>
+<body>
+	<div id="successMessage">Success! You choose all the correct answers.</div>
+	<div id="errorMessage">Please try again.</div>
+	<div id="answers">
+		<div id="answer1" class="answer" ondrop="drop(event)" ondragover="allowDrop(event)" data-match="choice1">
+        	<p>1</p>
+        </div>
+		<div id="answer2" class="answer" ondrop="drop(event)" ondragover="allowDrop(event)"  data-match="choice2">
+        	<p>2</p>
+        </div>
+        <div id="answer3" class="answer" ondrop="drop(event)" ondragover="allowDrop(event)" data-match="choice3">
+        	<p>3</p>
+        </div>
+        <div id="answer4" class="answer" ondrop="drop(event)" ondragover="allowDrop(event)"  data-match="choice4">
+        	<p>4</p>
+        </div>
+        <div id="answer5" class="answer" ondrop="drop(event)" ondragover="allowDrop(event)"  data-match="choice5">
+        	<p>5</p>
+        </div>
+        <div id="answer6" class="answer" ondrop="drop(event)" ondragover="allowDrop(event)"  data-match="choice6">
+        	<p>6</p>
+        </div>
+        <div id="answer7" class="answer" ondrop="drop(event)" ondragover="allowDrop(event)"  data-match="choice7">
+        	<p>7</p>
+        </div>
+        <div id="answer8" class="answer" ondrop="drop(event)" ondragover="allowDrop(event)"  data-match="choice8">
+        	<p>8</p>
+        </div>
+        <div id="answer9" class="answer" ondrop="drop(event)" ondragover="allowDrop(event)"  data-match="choice9">
+        	<p>9</p>
+        </div>
+        <div id="answer10" class="answer" ondrop="drop(event)" ondragover="allowDrop(event)"  data-match="choice10">
+        	<p>10</p>
+        </div>
+	</div>
+    <div id="choices">
+		<div id="choice2" class="choice" draggable="true" ondragstart="drag(event)" data-target-id="answer2">Beta</div>
+        <div id="choice1" class="choice" draggable="true" ondragstart="drag(event)" data-target-id="answer1">Alpha</div>
+        <div id="choice3" class="choice" draggable="true" ondragstart="drag(event)" data-target-id="answer3">Carrot</div>
+        <div id="choice4" class="choice" draggable="true" ondragstart="drag(event)" data-target-id="answer4">Dog</div>
+        <div id="choice5" class="choice" draggable="true" ondragstart="drag(event)" data-target-id="answer5">Eagle</div>
+        <div id="choice9" class="choice" draggable="true" ondragstart="drag(event)" data-target-id="answer9">Ice</div>
+        <div id="choice10" class="choice" draggable="true" ondragstart="drag(event)" data-target-id="answer10">Juice</div>
+        <div id="choice6" class="choice" draggable="true" ondragstart="drag(event)" data-target-id="answer6">Feather</div>
+        <div id="choice7" class="choice" draggable="true" ondragstart="drag(event)" data-target-id="answer7">Ginger</div>
+        <div id="choice8" class="choice" draggable="true" ondragstart="drag(event)" data-target-id="answer8">Hat</div>
+        
+	</div>
+    <div class="controls">
+		<button type="button" onclick="submitAnswer()">Submit</button>
+        <button type="button" onclick="clearAnswer()">Clear All</button>
+	</div>
+<script>
+"use strict";
+var droppedElementId;
+var answer = 0;
+	
+function allowDrop(ev){
+	// console.log("ev", ev);
+	// console.log("ev.srcElement",ev.srcElement);
+	ev.preventDefault();
+	}
+
+function drag(ev){
+	ev.dataTransfer.setData("Text",ev.target.id);
+	//console.log("ev.target.id = ", ev.target.id);
+	//source = ev.target;
+	ev.dataTransfer.effectAllowed = "move";
+	droppedElementId = ev.target.id;
+	}
+
+function drop(ev){
+	ev.preventDefault();
+	var targetElement = document.getElementById(ev.target.id);
+	var dropTarget = targetElement.getAttribute("data-match");
+	console.log("ev.target.id =", ev.target.id);
+	
+	if(droppedElementId == dropTarget){
+		console.log("Matches! dropTarget=" + dropTarget + "droppedElementId=" + droppedElementId);
+		answer++;
+		//console.log(answer);
+		} else {
+		console.log("not correct target");
+		answer--;
+		//console.log(answer);
+		targetElement.setAttribute("class", "wrongAnswer");
+		}
+		
+	var data=ev.dataTransfer.getData("Text");
+	ev.target.appendChild(document.getElementById(data));
+	}
+	
+	
+function submitAnswer(){
+	var questionList = document.querySelector("#answers");
+	var children = questionList.children,
+	numQuestions = children.length;
+	console.log(numQuestions);
+	
+	var checkAnswers = answer;
+	if (checkAnswers === numQuestions){
+		console.log("you are correct in all!");
+		document.getElementById("successMessage").style.display="block";
+		} else if (checkAnswers != numQuestions){
+			console.log("Please try again.");
+			document.getElementById("errorMessage").style.display="block";
+			var wrongAnswerHelp = document.getElementsByClassName("wrongAnswer");
+
+			for(var i = 0; i < wrongAnswerHelp.length; ++i){
+				wrongAnswerHelp[i].style.border = "thin solid red";
+				}
+			}
+		}
+	
+	function clearAnswer(){
+		console.log('clear answer was clicked');
+		
+		var selectedChoices = Array.prototype.slice.call(document.querySelectorAll("choice"));
+		
+		console.log(selectedChoices);
+		var fragment = document.createDocumentFragment();
+		fragment.appendChild(selectedChoices);
+		for ( var e = 0; e < selectedChoices.length; e++ ) {
+  			fragment.appendChild( selectedChoices[e] );
+			}
+			
+		for ( var i = 0; i < selectedChoices.length; i++ ) {
+  			selectedChoices[i].appendChild( fragment.cloneNode(true) );
+			}
+
+		}
+	
+	
+	
+  </script>
+</body>
+</html>

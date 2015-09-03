@@ -63,8 +63,8 @@ body {
 </style>
 </head>
 <body>
-	<div id="successMessage">Success! You choose all the correct answers.</div>
-	<div id="errorMessage">Please try again.</div>
+	<div id="successMessage"><strong>Success!</strong>You choose all the correct answers.</div>
+	<div id="errorMessage"><strong>Please try again.</strong> <em>Wrong answers are highlighted below.</em></div>
 	<div id="answers">
 		<div id="answer1" class="answer" ondrop="drop(event)" ondragover="allowDrop(event)" data-match="choice1">
         	<p>1</p>
@@ -120,15 +120,11 @@ var droppedElementId;
 var answer = 0;
 	
 function allowDrop(ev){
-	// console.log("ev", ev);
-	// console.log("ev.srcElement",ev.srcElement);
 	ev.preventDefault();
 	}
 
 function drag(ev){
 	ev.dataTransfer.setData("Text",ev.target.id);
-	//console.log("ev.target.id = ", ev.target.id);
-	//source = ev.target;
 	ev.dataTransfer.effectAllowed = "move";
 	droppedElementId = ev.target.id;
 	}
@@ -141,14 +137,13 @@ function drop(ev){
 	
 	if(droppedElementId == dropTarget){
 		console.log("Matches! dropTarget=" + dropTarget + "droppedElementId=" + droppedElementId);
+		//add up correct answers
 		answer++;
-		//console.log(answer);
 		} else {
-		console.log("not correct target");
-		answer--;
-		//console.log(answer);
-		targetElement.setAttribute("class", "wrongAnswer");
-		}
+			console.log("not correct target");
+			answer--;
+			targetElement.setAttribute("class", "wrongAnswer");
+			}
 		
 	var data=ev.dataTransfer.getData("Text");
 	ev.target.appendChild(document.getElementById(data));

@@ -1,0 +1,95 @@
+@import "libraries/bourbon/bourbon";
+
+@import "grid-settings";
+
+@import "libraries/neat/neat";
+
+@import "reset";
+
+@import "variables";
+
+@import "mixins";
+
+html, body {
+	font-family: $verdana;
+	color: $primary-neutral;
+	}
+
+h1, h2, h3 {
+	color: $primary-color;
+	font-weight: normal;
+	}
+
+a {
+	color: $primary-color-shade;
+
+	&:hover {
+		color: darken($primary-color-shade, 10%);
+		}
+	}
+
+a.button {
+	@include linear-gradient($primary-color-shade 0, $primary-color 50%, $fallback: $primary-color-shade);
+	color: lighten($primary-color-shade, 80%);
+	@include span-columns(3);
+	@include shift(3 of 9);
+	@include pad(default);
+	text-decoration: none;
+	margin-bottom: 1em;
+	
+	&:hover {
+
+	}
+}
+
+.header {
+	background-color: lighten($primary-color-shade, 30%);
+
+	h1 {
+		@include pad(default);
+		}
+
+	nav {
+		ul {
+			list-style-type: none;
+			
+			li {
+				@include media($screen-md-min) {
+					display:inline;
+					}
+				}
+			}
+		}
+	}
+
+.footer-container {
+	background-color: lighten($primary-color-shade, 30%);
+	}
+
+.main {
+	@include outer-container(100%);
+	
+	section {
+		clear:both;
+		}
+
+	aside {
+		@include media($screen-md-min) {
+			@include span-columns(3);
+			}
+
+		@include pad(default);
+		background-color: lighten($complimentary-color, 10%);
+		color: lighten($complimentary-color, 80%);
+
+		h3 {
+			color: lighten($complimentary-color, 80%);	
+			}
+		}
+	article {
+		@include media($screen-md-min) {
+			@include span-columns(9);
+			}
+		@include pad(default);
+		}
+	}
